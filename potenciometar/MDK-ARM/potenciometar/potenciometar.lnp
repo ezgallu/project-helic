@@ -1,0 +1,26 @@
+--cpu=Cortex-M4.fp
+"potenciometar\stm32f4xx_hal_rcc.o"
+"potenciometar\stm32f4xx_hal_tim_ex.o"
+"potenciometar\stm32f4xx_hal_dma.o"
+"potenciometar\stm32f4xx_hal_gpio.o"
+"potenciometar\stm32f4xx_hal_flash_ramfunc.o"
+"potenciometar\stm32f4xx_hal_pwr.o"
+"potenciometar\stm32f4xx_hal.o"
+"potenciometar\stm32f4xx_hal_cortex.o"
+"potenciometar\stm32f4xx_hal_adc.o"
+"potenciometar\stm32f4xx_hal_dma_ex.o"
+"potenciometar\stm32f4xx_hal_rcc_ex.o"
+"potenciometar\stm32f4xx_hal_flash_ex.o"
+"potenciometar\stm32f4xx_hal_flash.o"
+"potenciometar\stm32f4xx_hal_tim.o"
+"potenciometar\stm32f4xx_hal_pwr_ex.o"
+"potenciometar\stm32f4xx_hal_adc_ex.o"
+"potenciometar\stm32f4xx_hal_msp.o"
+"potenciometar\main.o"
+"potenciometar\stm32f4xx_it.o"
+"potenciometar\system_stm32f4xx.o"
+"potenciometar\startup_stm32f417xx.o"
+--library_type=microlib --strict --scatter "potenciometar\potenciometar.sct"
+--diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "potenciometar.map" -o potenciometar\potenciometar.axf

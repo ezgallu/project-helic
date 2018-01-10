@@ -1,0 +1,24 @@
+--cpu=Cortex-M4.fp
+"tipka\system_stm32f4xx.o"
+"tipka\stm32f4xx_hal_tim_ex.o"
+"tipka\stm32f4xx_hal_rcc_ex.o"
+"tipka\stm32f4xx_hal_pwr_ex.o"
+"tipka\stm32f4xx_hal_tim.o"
+"tipka\stm32f4xx_hal_gpio.o"
+"tipka\stm32f4xx_hal_pwr.o"
+"tipka\stm32f4xx_hal_flash_ramfunc.o"
+"tipka\stm32f4xx_hal_rcc.o"
+"tipka\stm32f4xx_hal.o"
+"tipka\stm32f4xx_hal_flash.o"
+"tipka\stm32f4xx_hal_flash_ex.o"
+"tipka\stm32f4xx_hal_cortex.o"
+"tipka\stm32f4xx_hal_dma.o"
+"tipka\stm32f4xx_hal_dma_ex.o"
+"tipka\stm32f4xx_hal_msp.o"
+"tipka\stm32f4xx_it.o"
+"tipka\main.o"
+"tipka\startup_stm32f417xx.o"
+--library_type=microlib --strict --scatter "tipka\tipka.sct"
+--diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "tipka.map" -o tipka\tipka.axf
