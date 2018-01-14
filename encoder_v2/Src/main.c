@@ -63,6 +63,7 @@ static void MX_TIM1_Init(void);
 
 /* USER CODE BEGIN 0 */
 uint16_t i;
+float deg, temp_deg;
 /* USER CODE END 0 */
 
 int main(void)
@@ -103,7 +104,12 @@ int main(void)
   {
   /* USER CODE END WHILE */
 		i = TIM1->CNT;
-		
+		temp_deg = 360*i/2400;
+		if(temp_deg > 90){
+			deg = 360 - temp_deg;
+		}else{
+			deg = temp_deg * -1;
+		}
   /* USER CODE BEGIN 3 */
 
   }
@@ -172,18 +178,18 @@ static void MX_TIM1_Init(void)
   htim1.Instance = TIM1;
   htim1.Init.Prescaler = 0;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 65535;
+  htim1.Init.Period = 2400;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
   sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
   sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
-  sConfig.IC1Filter = 5;
+  sConfig.IC1Filter = 15;
   sConfig.IC2Polarity = TIM_ICPOLARITY_RISING;
   sConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC2Prescaler = TIM_ICPSC_DIV1;
-  sConfig.IC2Filter = 5;
+  sConfig.IC2Filter = 15;
   if (HAL_TIM_Encoder_Init(&htim1, &sConfig) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);

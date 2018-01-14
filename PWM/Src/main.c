@@ -96,7 +96,7 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-	HAL_GPIO_WritePin(GPIOE,GPIO_PIN_2,1);
+	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_2,1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -104,13 +104,15 @@ int main(void)
   while (1)
   {
   /* USER CODE END WHILE */
-		if(dutyCycle>70){
+	/*	if(dutyCycle>70){
 			dutyCycle = 0;
-			HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_2 | GPIO_PIN_3);	
+			HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_2 | GPIO_PIN_3);	
 		}
 		htim1.Instance->CCR1 = dutyCycle;
 		dutyCycle += 10;
-		HAL_Delay(1000);		
+		HAL_Delay(1000);
+	*/
+		htim1.Instance->CCR1 = 55;
   /* USER CODE BEGIN 3 */
 
   }
@@ -248,17 +250,18 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct;
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOE_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_2|GPIO_PIN_3, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2|GPIO_PIN_3, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PE2 PE3 */
+  /*Configure GPIO pins : PC2 PC3 */
   GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
 }
 
