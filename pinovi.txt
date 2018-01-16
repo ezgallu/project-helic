@@ -1,0 +1,6 @@
+PWM:
+	-PE9 i PE11
+	-PE10 i PE12 (smjer)
+ENCODER:
+	-PA0 i PA1 (prvi)
+	-PA6 i PA7 (drugi)

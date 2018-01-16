@@ -17,5 +17,5 @@ static const float wcf = 125.6637;
 static const float zetaf = 0.85;
 
 //treba odredit T procesora
-static const float dt
+static const float dt = 0.00002;
 #endif

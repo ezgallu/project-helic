@@ -1,0 +1,25 @@
+--cpu=Cortex-M4.fp
+"encoder_pwm\main.o"
+"encoder_pwm\stm32f4xx_it.o"
+"encoder_pwm\stm32f4xx_hal_msp.o"
+"encoder_pwm\heli.o"
+"encoder_pwm\startup_stm32f407xx.o"
+"encoder_pwm\system_stm32f4xx.o"
+"encoder_pwm\stm32f4xx_hal_tim.o"
+"encoder_pwm\stm32f4xx_hal_dma.o"
+"encoder_pwm\stm32f4xx_hal_rcc_ex.o"
+"encoder_pwm\stm32f4xx_hal_pwr_ex.o"
+"encoder_pwm\stm32f4xx_hal_rcc.o"
+"encoder_pwm\stm32f4xx_hal_dma_ex.o"
+"encoder_pwm\stm32f4xx_hal.o"
+"encoder_pwm\stm32f4xx_hal_tim_ex.o"
+"encoder_pwm\stm32f4xx_hal_cortex.o"
+"encoder_pwm\stm32f4xx_hal_flash.o"
+"encoder_pwm\stm32f4xx_hal_pwr.o"
+"encoder_pwm\stm32f4xx_hal_gpio.o"
+"encoder_pwm\stm32f4xx_hal_flash_ex.o"
+"encoder_pwm\stm32f4xx_hal_flash_ramfunc.o"
+--library_type=microlib --strict --scatter "encoder_pwm\encoder_pwm.sct"
+--diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "encoder_pwm.map" -o encoder_pwm\encoder_pwm.axf

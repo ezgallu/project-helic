@@ -1,0 +1,24 @@
+--cpu=Cortex-M4.fp
+"pwm_v2\system_stm32f4xx.o"
+"pwm_v2\main.o"
+"pwm_v2\stm32f4xx_it.o"
+"pwm_v2\stm32f4xx_hal_msp.o"
+"pwm_v2\stm32f4xx_hal_pwr_ex.o"
+"pwm_v2\stm32f4xx_hal_cortex.o"
+"pwm_v2\stm32f4xx_hal_tim.o"
+"pwm_v2\stm32f4xx_hal_pwr.o"
+"pwm_v2\stm32f4xx_hal_rcc_ex.o"
+"pwm_v2\stm32f4xx_hal_tim_ex.o"
+"pwm_v2\stm32f4xx_hal_dma.o"
+"pwm_v2\stm32f4xx_hal_flash.o"
+"pwm_v2\stm32f4xx_hal_flash_ex.o"
+"pwm_v2\stm32f4xx_hal_dma_ex.o"
+"pwm_v2\stm32f4xx_hal.o"
+"pwm_v2\stm32f4xx_hal_gpio.o"
+"pwm_v2\stm32f4xx_hal_flash_ramfunc.o"
+"pwm_v2\stm32f4xx_hal_rcc.o"
+"pwm_v2\startup_stm32f407xx.o"
+--library_type=microlib --strict --scatter "pwm_v2\pwm_v2.sct"
+--diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "pwm_v2.map" -o pwm_v2\pwm_v2.axf

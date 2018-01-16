@@ -96,14 +96,15 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_2,1);
+	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_2,0);
   /* USER CODE END 2 */
-
+	htim1.Instance->CCR1 = 40;
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
   /* USER CODE END WHILE */
+		//kad je pwm na inA, 
 	/*	if(dutyCycle>70){
 			dutyCycle = 0;
 			HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_2 | GPIO_PIN_3);	
@@ -112,7 +113,7 @@ int main(void)
 		dutyCycle += 10;
 		HAL_Delay(1000);
 	*/
-		htim1.Instance->CCR1 = 55;
+		
   /* USER CODE BEGIN 3 */
 
   }
