@@ -1,6 +1,5 @@
 encoder_pwm\heli.o: ..\Src\heli.c
 encoder_pwm\heli.o: ../Inc/parametri.h
-encoder_pwm\heli.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 encoder_pwm\heli.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 encoder_pwm\heli.o: ../Inc/stm32f4xx_hal_conf.h
 encoder_pwm\heli.o: ../Inc/main.h
@@ -31,3 +30,5 @@ encoder_pwm\heli.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 encoder_pwm\heli.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 encoder_pwm\heli.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 encoder_pwm\heli.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
+encoder_pwm\heli.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+encoder_pwm\heli.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

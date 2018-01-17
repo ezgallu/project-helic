@@ -40,15 +40,17 @@
 #include "stm32f4xx_hal.h"
 #include <stdlib.h>
 #include "regulator.h"
+#include "parametri.h"
 
 /* USER CODE BEGIN Includes */
-
+int i = 0;
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim4;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
@@ -57,24 +59,32 @@ TIM_HandleTypeDef htim3;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+
 static void MX_GPIO_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_TIM2_Init(void);
-static void MX_TIM3_Init(void);                                    
+static void MX_TIM3_Init(void);  
+static void MX_TIM4_Init(void);
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
                                 
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-float Get_Encoder_Pos(TIM_HandleTypeDef *htim);
-void Set_Duty_Cycle(uint8_t motor, int dutyCycle);
+
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
 int dutyCycle1, dutyCycle2;
 float deg1, deg2, ref1, ref2, err1, err2, pitch_int, yaw_int, anti_windup_pitch, anti_windup_yaw;
-float	u_int1, u_int2, u_p1, u_p2, speed_pitch, speed_yaw, u_pff, u_pitch, u_yaw;
-uint16_t max_u = 65;
+float	u_int1, u_int2, u_p1, u_p2, u_pff, u_pitch, u_yaw;
+//(k), (k-1), (k-2)
+float speed_pitch[3] = {0.0, 0.0, 0.0};
+float speed_yaw[3] = {0.0, 0.0, 0.0};
+//(k-1), (k-2)
+float pitch[2] = {0.0, 0.0};
+float yaw[2] = {0.0, 0.0};
+
 /* USER CODE END 0 */
 
 int main(void)
@@ -87,8 +97,7 @@ int main(void)
 	
 	ref1 = 0.0;
 	ref2 = 0.0;
-	speed_pitch = 0.0;
-	speed_yaw = 0.0;
+	
 	pitch_int = 0.0;
 	yaw_int = 0.0;
 	anti_windup_pitch = 0.0;
@@ -117,6 +126,7 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
+	MX_TIM4_Init();
 		
   /* USER CODE BEGIN 2 */
 	HAL_GPIO_WritePin(GPIOE,GPIO_PIN_10,(GPIO_PinState)0);
@@ -127,6 +137,8 @@ int main(void)
 	/* Encoder timer start */
 	HAL_TIM_Encoder_Start(&htim2,TIM_CHANNEL_ALL);
 	HAL_TIM_Encoder_Start(&htim3,TIM_CHANNEL_ALL);
+	/* Start main loop */
+	HAL_TIM_Base_Start_IT(&htim4);
 	
 	/* USER CODE END 2 */
 
@@ -135,21 +147,6 @@ int main(void)
   while (1)
   {
   /* USER CODE END WHILE */
-		deg1 = Get_Encoder_Pos(&htim3);
-		deg2 = Get_Encoder_Pos(&htim2);
-		
-		err1 = ref1 - deg1;
-		err2 = ref2 - deg2;				
-		
-		u_int1 = integral_control(err1, err2, &pitch_int, &anti_windup_pitch, 0);
-		u_int2 = integral_control(err1, err2, &yaw_int, &anti_windup_yaw, 1);
-		proporcional(err1, err2, speed_pitch, speed_yaw, &u_p1, &u_p2);
-		u_pff = feed_forward(deg1);
-		
-		u_pitch = u_int1 + u_p1 + u_pff;
-		u_yaw = u_int2 + u_p2;
-		
-		Set_Duty_Cycle(2,dutyCycle2);
 		
   /* USER CODE BEGIN 3 */
 
@@ -350,6 +347,38 @@ static void MX_TIM3_Init(void)
 
 }
 
+/* TIM4 init function */
+static void MX_TIM4_Init(void)
+{
+
+  TIM_ClockConfigTypeDef sClockSourceConfig;
+  TIM_MasterConfigTypeDef sMasterConfig;
+
+  htim4.Instance = TIM4;
+  htim4.Init.Prescaler = 1599;
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim4.Init.Period = 10;
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+}
+
 /** Configure pins as 
         * Analog 
         * Input 
@@ -379,45 +408,39 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-float Get_Encoder_Pos(TIM_HandleTypeDef *htim){
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+  /* NOTE : This function Should not be modified, when the callback is needed,
+            the __HAL_TIM_PeriodElapsedCallback could be implemented in the user file
+   */
+	i++;
+	deg1 = Get_Encoder_Pos(&htim3);
+	deg2 = Get_Encoder_Pos(&htim2);
+		
+	Set_Pose(pitch, deg1, bias);
+	Set_Pose(yaw, deg2, 0.0);
+		
+	err1 = ref1 - deg1;
+	err2 = ref2 - deg2;		
+				
+	u_int1 = integral_control(err1, err2, &pitch_int, &anti_windup_pitch, 0);
+	u_int2 = integral_control(err1, err2, &yaw_int, &anti_windup_yaw, 1);
+		
+	proporcional(err1, err2, *speed_pitch, *speed_yaw, &u_p1, &u_p2);
+		
+	u_pff = feed_forward(deg1);
+		
+	u_pitch = u_int1 + u_p1 + u_pff;
+	u_yaw = u_int2 + u_p2;
+		
+	Set_Speed(1, u_pitch, &htim1);
+	Set_Speed(2, u_yaw, &htim1);
+		
+	Get_Speed(speed_pitch, pitch);
+	Get_Speed(speed_yaw, yaw);
 	
-	uint32_t i;
-	float temp_deg, deg;
-	
-	i = (*htim).Instance->CNT;
-	temp_deg = 2*3.1415926*i/2400.0;
-	if(temp_deg > (3.1415926/2.0)){
-		deg = 2*3.1415926 - temp_deg;
-	}else{
-		deg = temp_deg * -1;
-	}
-	return deg;
-}
-
-void Set_Duty_Cycle(uint8_t motor, int dutyCycle){
-	
-	GPIO_PinState pin_state;
-	if (abs(dutyCycle) > max_u){
-		dutyCycle = max_u*dutyCycle/abs(dutyCycle);	
-	}
-	if (dutyCycle < 0){
-		pin_state = (GPIO_PinState) 1;
-		dutyCycle = 100 + dutyCycle;
-	}else{
-		pin_state = (GPIO_PinState) 0;
-	}
-	switch(motor){
-		case 1:
-			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, pin_state);
-			htim1.Instance->CCR1 = dutyCycle;
-			break;
-		case 2: 
-			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_12, pin_state);
-			htim1.Instance->CCR2 = dutyCycle;
-			break;
-		default:
-			break;
-	}
 	return;
 }
 /* USER CODE END 4 */

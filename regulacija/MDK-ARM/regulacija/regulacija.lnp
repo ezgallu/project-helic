@@ -1,0 +1,25 @@
+--cpu=Cortex-M4.fp
+"regulacija\startup_stm32f407xx.o"
+"regulacija\system_stm32f4xx.o"
+"regulacija\stm32f4xx_hal_flash_ex.o"
+"regulacija\stm32f4xx_hal_pwr_ex.o"
+"regulacija\stm32f4xx_hal_rcc.o"
+"regulacija\stm32f4xx_hal_cortex.o"
+"regulacija\stm32f4xx_hal_rcc_ex.o"
+"regulacija\stm32f4xx_hal_tim_ex.o"
+"regulacija\stm32f4xx_hal_pwr.o"
+"regulacija\stm32f4xx_hal_tim.o"
+"regulacija\stm32f4xx_hal_flash.o"
+"regulacija\stm32f4xx_hal_dma.o"
+"regulacija\stm32f4xx_hal_flash_ramfunc.o"
+"regulacija\stm32f4xx_hal_gpio.o"
+"regulacija\stm32f4xx_hal_dma_ex.o"
+"regulacija\stm32f4xx_hal.o"
+"regulacija\stm32f4xx_it.o"
+"regulacija\stm32f4xx_hal_msp.o"
+"regulacija\main.o"
+"regulacija\heli.o"
+--library_type=microlib --strict --scatter "regulacija\regulacija.sct"
+--diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "regulacija.map" -o regulacija\regulacija.axf

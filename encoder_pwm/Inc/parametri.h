@@ -1,5 +1,7 @@
 #ifndef _PARAM_H
 #define _PARAM_H
+
+#include "stm32f4xx_hal.h"
 //parameters
 static const float g = 9.81;
 static const float m_heli = 0.459;
@@ -15,7 +17,12 @@ static const float Tr_y = 1.0;
 //derivative filter
 static const float wcf = 125.6637;
 static const float zetaf = 0.85;
+static const float bias = -1.0472;
 
 //treba odredit T procesora
-static const float dt = 0.000001;
+static const float dt = 0.001;
+
+//max duty cycle
+static const uint16_t max_duty = 65;
+
 #endif
