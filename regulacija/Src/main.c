@@ -82,6 +82,7 @@ double speed_yaw[3] = {0.0, 0.0, 0.0};
 //(k-1), (k-2)
 double pitch[2] = {0.0, 0.0};
 double yaw[2] = {0.0, 0.0};
+double test[3] = {1.0, 2.0, 3.0};
 /* USER CODE END 0 */
 
 int main(void)
@@ -417,21 +418,21 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	err2 = ref2 - deg2;		
 				
 	u_int1 = integral_control(err1, err2, &pitch_int, &anti_windup_pitch, 0);
-	u_int2 = integral_control(err1, err2, &yaw_int, &anti_windup_yaw, 1);
+	//u_int2 = integral_control(err1, err2, &yaw_int, &anti_windup_yaw, 1);
 		
 	proporcional(err1, err2, *speed_pitch, *speed_yaw, &u_p1, &u_p2);
 		
 	u_pff = feed_forward(*pitch);
 		
 	u_pitch = u_int1 + u_p1 + u_pff;
-	u_yaw = u_int2 + u_p2;
-		
-	Set_Speed(1, u_pitch, &htim1);
-	Set_Speed(2, u_yaw, &htim1);
+	//u_yaw = u_int2 + u_p2;
+	//u_pitch = u_p1 + u_pff;
+	//Set_Speed(1, 3.5, &htim1);
+	Set_Speed(2, 3.5, &htim1);
 	
 	Get_Speed(speed_pitch, pitch);
-	Get_Speed(speed_yaw, yaw);
-	
+	//Get_Speed(speed_yaw, yaw);
+		
 	return;
 }
 /* USER CODE END 4 */
